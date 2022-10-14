@@ -1,0 +1,103 @@
+
+Közterületi Hibabejelentő
+- index.html - login form (e-mail és jelszó)
+- registry.html - regisztrációs form (e-mail, vezetéknév, keresztnév, jelszó és jelszó megerősítés)
+- forgotten_password.html - elfelejtett jelszó form (e-mail)
+- issue_report_list.html - táblázat, új hibajelentés gomb
+- new_issue.html - issue adatok edit + save + cancel
+- profile.html - felhasználó adatok szerkesztés és törlés gomb
+- edit_profile.html - felhasználó adatok edit + save + cancel
+- own_issues.html - táblázat, új hibajelentés, szerkesztés és törlés gomb
+- edit_issue.html - issue adatok edit + save + cancel
+
+Routing
+
+render.js
+
+middleware/auth/
+    auth.js
+    checkPermission.js
+    checkRegistryData.js
+    checkUserExist.js
+    passwordValidation.js
+    sendPasswordRequest.js
+
+
+middleware/user/
+    getUser.js
+    upsertUser.js
+    deleteUser.js
+
+middleware/issues/
+    getAllIssues.js
+    getIssues.js
+    getIssue.js
+    upsertIssue.js
+    deleteIssue.js
+
+
+    
+    GET, POST /                                     - post esetén jelszó ellenőrzés, ha ok, issues-ra redirect, ha nem ok hibát dob
+        passwordValidationMW
+        renderMW(index.html)
+
+    GET, POST /registry                             - post esetén adatok ellenőrzése, ha ok, létrehozza az új felhasználót,
+        checkRegistryDataMW                             vissza a főoldalra, ha nem ok hibát dob
+        upsertUserMW
+        renderMW(registry.html)
+
+    GET, POST /forgotten_password                   - post esetén ellenőrzi, hogy létezik-e a felhasználó, ha igen,
+        checkUserExistMW                                beállít egy ideiglenes jelszót és elküldi email-ben, ha nem létezik hibát dob
+        sendPasswordRequestMW
+        renderMW(forgotten_password.html)
+
+    GET /issues
+        authMW
+        getAllIssueMW
+        renderMW(issue_report_list.html)
+
+    GET /issues/:userid
+        authMW
+        getUserMW
+        getIssuesMW
+        renderMW(own_issues.html)
+
+    GET, POST /issues/:userid/new                   - Ellenőrzi a jogosultságát a felhasználónak, ha magához akar felvenni (vagy admin),
+        authMW                                           akkor beolvassa az adatokat (ha vannak, ellenkező esetben nem) és menti adatbázisba
+        checkPermissionMW
+        getUserMW
+        upsertIssueMW
+        renderMW(new_issue.html)
+
+    GET, POST /issues/:userid/edit/:issueid         - Ellenőrzi a jogosultságát a felhasználónak, ha magánál akar módosítani (vagy admin),
+        authMW                                           akkor beolvassa az adatokat (ha vannak, ellenkező esetben nem) és menti adatbázisba
+        checkPermissionMW
+        getUserMW
+        getIssueMW
+        upsertIssueMW
+        renderMW(edit_issue.html)
+
+    GET /issues/:userid/del/:issueid
+        authMW
+        checkPermissionMW
+        getUserMW
+        getIssueMW
+        deleteIssueMW
+
+    GET /profile/:userid
+        authMW
+        getUserMW
+        renderMW(profile.html)
+
+    GET, POST /user/edit/:userid                    - Ellenőrzi a jogosultságát a felhasználónak, ha magát akarja módosítani (vagy admin),
+        authMW                                          akkor beolvassa az adatokat (ha vannak, ellenkező esetben nem) és menti adatbázisba
+        checkPermissionMW
+        getUserMW
+        upsertUserMW
+        renderMW(edit_profile.html)
+
+    GET /user/del/:userid
+        authMW
+        checkPermissionMW
+        getUserMW
+        deleteUserMW
