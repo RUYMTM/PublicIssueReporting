@@ -5,6 +5,7 @@
 
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        next();
+        console.log("delete user userid:" + res.locals.user._id);
+        return next();
     };
 };

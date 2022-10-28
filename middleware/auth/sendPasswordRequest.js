@@ -6,6 +6,10 @@
 
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        next();
+        if (typeof res.locals.email === 'undefined') {
+            return next();
+        }
+        console.log("password request sent to " + res.locals.email)
+        return res.redirect("/?success=password_request")
     };
 };

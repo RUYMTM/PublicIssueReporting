@@ -5,6 +5,14 @@
 
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        next();
+        if (typeof req.body.email === 'undefined'){
+            return next();
+        }
+        if (req.body.email !== 'email'){
+            res.locals.error = "Nem létezik felhasználó a megadott e-mail címmel!"
+            return next();
+        }
+        res.locals.email = req.body.email;
+        return next();
     };
 };

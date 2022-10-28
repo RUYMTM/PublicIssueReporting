@@ -5,6 +5,7 @@
 
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        next();
+        console.log("delete issue issueid:" + res.locals.issue._id);
+        return next();
     };
 };

@@ -1,0 +1,73 @@
+<%- include('header') -%>
+<body>
+<div class="container">
+    <%- include('logout') -%>
+    <div class="row pb-5">
+        <div class="col-11 border-bottom border-4 border-dark">
+            <div class="row justify-content-around">
+                <div class="col-6">
+                    <h1>Hibajelentések</h1>
+                </div>
+                <div class="col-6 text-end">
+                        <a type="button" class="btn btn-light rounded-0" href="/profile/0">Profile</a>
+                        <a type="button" class="btn btn-light rounded-0 disabled" href="#" aria-disabled="true">Hibajelentések</a>
+                        <a type="button" class="btn btn-light rounded-0" href="/issues/0">Saját hibajelentéseim</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="row pb-2 justify-content-around">
+                <div class="col-7">
+                    <a type="button" class="btn btn-primary" href="/issues/0/new">Új hibajelentés</a>
+                </div>
+                <div class="col-5">
+                    <div class="form-group row justify-content-md-end">
+                        <label for="pageSelector" class="col-2 col-form-label">Oldal:</label>
+                        <div class="col-3">
+                            <select class="form-control" id="pageSelector">
+                                <option>1</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="row pb-5 justify-content-md-center">
+                <table class="table">
+                    <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">Hiba</th>
+                        <th scope="col">Tulajdonos</th>
+                        <th scope="col">Helyszín</th>
+                        <th scope="col">Státusz</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% allIssues.forEach(function(issue){ %>
+                        <tr>
+                            <td>
+                                <%= issue.description %>
+                            </td>
+                            <td>
+                                <%= issue.location %>
+                            </td>
+                            <td>
+                                <a href="/profile/<%= issue._owner._id %> "><%= issue._owner.lastname %> <%= issue._owner.firstname %></a>
+                            </td>
+                            <td>
+                                <input class="form-check-input" type="checkbox"  <% if (issue.status === true) { %>checked<% } %> disabled>
+                            </td>
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('footer') -%>

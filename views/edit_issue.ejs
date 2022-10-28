@@ -1,0 +1,50 @@
+<%- include('header') -%>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-md-center pb-5">
+        <div class="col-11 border-bottom border-4 border-dark">
+            <h1>Hibajelentés szerkesztése</h1>
+        </div>
+    </div>
+    <form method="POST">
+        <div class="row justify-content-md-center">
+            <div class="col-5">
+                <div class="row justify-content-md-center">
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                </div>
+                <input type="text" name = "_owner" value="<%= issue._owner._id %>" class="form-control" hidden>
+                <div class="row pb-5 justify-content-md-center">
+                    <div class="input-group">
+                        <span class="input-group-text">Hiba megnevezése:</span>
+                        <input type="text" aria-label="Hiba megnevezése" name = "description" value="<%= issue.description %>" class="form-control">
+                    </div>
+                </div>
+                <div class="row pb-5 justify-content-md-center">
+                    <div class="input-group">
+                        <span class="input-group-text">Pontos helyszín:</span>
+                        <input type="text" aria-label="Pontos helyszín" name="location" value="<%= issue.location %>" class="form-control">
+                    </div>
+                </div>
+                <div class="row pb-5 justify-content-md-center">
+                    <div class="form-group row justify-content-around">
+                        <label for="statusCheckbox" class="col-6 col-form-label">Státusz:</label>
+                        <div class="col-6 align-self-center">
+                            <input class="form-check-input" type="checkbox" name="status" id="statusCheckbox" <% if (issue.status === true) { %>checked<% } %>>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-around">
+                    <div class="col-2">
+                        <input type="submit" class="btn btn-primary" value="Mentés"/>
+                    </div>
+                    <div class="col-2">
+                        <a type="button" class="btn btn-primary" href="/issues/<%= issue._owner._id %>">Mégsem</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%- include('footer') -%>

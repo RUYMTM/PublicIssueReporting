@@ -6,6 +6,12 @@
 
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        next();
+        if(typeof res.locals.issue === 'undefined'){
+            console.log("issue save")
+        }
+        else{
+            console.log("issue update")
+        }
+        return next();
     };
 };

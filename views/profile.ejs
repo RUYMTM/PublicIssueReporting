@@ -1,0 +1,48 @@
+<%- include('header') -%>
+<body>
+<div class="container">
+    <%- include('logout') -%>
+    <div class="row pb-5">
+        <div class="col-11 border-bottom border-4 border-dark">
+            <div class="row justify-content-around">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-4">
+                            <h1>Adatlap</h1>
+                        </div>
+                        <div class="col-3 align-self-center">
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden<% } %> href="/user/edit/<%= user._id %>">Szerkesztés</a>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden<% } %>  href="/user/del/<%= user._id %>">Törlés</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-end">
+                    <a type="button" class="btn btn-light rounded-0 disabled" href="#" aria-disabled="true">Profile</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/issues"
+                       aria-disabled="true">Hibajelentések</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/issues/0">Saját hibajelentéseim</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pb-5">
+        <div class="col-11">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row pb-5"><h4>E-mail cím: <%= user.email %></h4></div>
+                    <div class="row py-5"><h4>Vezetéknév: <%= user.lastname %></h4></div>
+                    <div class="row py-5"><h4>Keresztnév: <%= user.firstname %></h4></div>
+                    <div class="row py-5"><h4>Hibajelentések száma: <%= issues.length %></h4></div>
+                </div>
+                <div class="col-6">
+                    <img src="https://www.tableau.com/sites/default/files/2021-06/DataGlossary_Icons_Pie%20Chart.jpg"
+                         class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<%- include('footer') -%>

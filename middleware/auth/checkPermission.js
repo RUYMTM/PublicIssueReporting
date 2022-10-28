@@ -3,8 +3,14 @@
  *  If user has permission (own properties or admin user ) call next, otherwise redirect to the previous page
  */
 
-module.exports = function (objectrepository) {
+module.exports = function (objRepo) {
     return function (req, res, next) {
-        next();
+        if(typeof  req.params.userid === "undefined"){
+            return res.redirect("/issues")
+        }
+        if(req.params.userid === req.session.userId){
+            return res.redirect("/profile/"+req.params.userid)
+        }
+        return next();
     };
 };

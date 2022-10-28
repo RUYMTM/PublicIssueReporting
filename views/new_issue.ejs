@@ -1,0 +1,41 @@
+<%- include('header') -%>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-md-center pb-5">
+        <div class="col-11 border-bottom border-4 border-dark">
+            <h1>Új hibajelentés felvétele</h1>
+        </div>
+    </div>
+    <form method="POST">
+        <div class="row justify-content-md-center">
+            <div class="col-5">
+                <div class="row justify-content-md-center">
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                </div>
+                <div class="row pb-5 justify-content-md-center">
+                    <div class="input-group">
+                        <span class="input-group-text">Hiba megnevezése:</span>
+                        <input type="text" aria-label="Hiba megnevezése" name="description" class="form-control">
+                    </div>
+                </div>
+                <div class="row pb-5 justify-content-md-center">
+                    <div class="input-group">
+                        <span class="input-group-text">Pontos helyszín:</span>
+                        <input type="text" aria-label="Pontos helyszín" name="location" class="form-control">
+                    </div>
+                </div>
+                <div class="row justify-content-around">
+                    <div class="col-2">
+                        <input type="submit" class="btn btn-primary" value="Mentés"/>
+                    </div>
+                    <div class="col-2">
+                        <a type="button" class="btn btn-primary" href="/issues %>">Mégsem</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%- include('footer') -%>
