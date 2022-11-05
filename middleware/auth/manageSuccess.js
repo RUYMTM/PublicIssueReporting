@@ -1,4 +1,4 @@
-module.exports = function (objectrepository) {
+module.exports = function () {
     return function (req, res, next) {
         if (typeof req.query.success !== 'undefined' && req.query.success === "registry"){
             res.locals.message = "Sikeres regisztráció!"

@@ -4,7 +4,7 @@
  * Send temporary password to the user's e-mail address.
  */
 
-module.exports = function (objectrepository) {
+module.exports = function () {
     return function (req, res, next) {
         if (typeof res.locals.email === 'undefined') {
             return next();

@@ -31,104 +31,104 @@ module.exports = function (app) {
 
     app.post('/',
         passwordValidationMW(objRepo),
-        errorRenderMW(objRepo, 'login'),
-        renderMW(objRepo, 'login'));
+        errorRenderMW( 'login'),
+        renderMW( 'login'));
 
 
     app.get('/',
-        checkIfLoggedInMW(objRepo),
-        manageSuccessMW(objRepo),
-        renderMW(objRepo, 'login'));
+        checkIfLoggedInMW(),
+        manageSuccessMW(),
+        renderMW( 'login'));
 
     app.get('/registry',
-        checkIfLoggedInMW(objRepo),
-        errorRenderMW(objRepo, 'registry'),
-        renderMW(objRepo, 'registry'));
+        checkIfLoggedInMW(),
+        errorRenderMW( 'registry'),
+        renderMW( 'registry'));
 
     app.post('/registry',
-        checkIfLoggedInMW(objRepo),
+        checkIfLoggedInMW(),
         checkRegistryDataMW(objRepo),
         upsertUserMW(objRepo),
-        errorRenderMW(objRepo, 'registry'));
+        errorRenderMW( 'registry'));
 
     app.use('/forgotten_password',
-        checkIfLoggedInMW(objRepo),
+        checkIfLoggedInMW(),
         checkUserExistMW(objRepo),
-        sendPasswordRequestMW(objRepo),
-        renderMW(objRepo, 'forgotten_password'));
+        sendPasswordRequestMW(),
+        renderMW( 'forgotten_password'));
 
     app.get('/issues',
-        authMW(objRepo),
+        authMW(),
         getAllIssueMW(objRepo),
-        renderMW(objRepo, 'issue_report_list'));
+        renderMW( 'issue_report_list'));
 
     app.get('/issues/:userid',
-        authMW(objRepo),
+        authMW(),
         getUserMW(objRepo),
         getIssuesMW(objRepo),
-        renderMW(objRepo, 'own_issues'));
+        renderMW( 'own_issues'));
 
     app.use('/issues/:userid/new',
-        authMW(objRepo),
-        checkPermissionMW(objRepo));
+        authMW(),
+        checkPermissionMW());
 
     app.get('/issues/:userid/new',
-        renderMW(objRepo, 'new_issue'));
+        renderMW( 'new_issue'));
 
     app.post('/issues/:userid/new',
         getUserMW(objRepo),
         upsertIssueMW(objRepo),
-        redirectMW(objRepo,'/issues/:userid'));
+        redirectMW('/issues/:userid'));
 
     app.use('/issues/:userid/edit/:issueid',
-        authMW(objRepo),
-        checkPermissionMW(objRepo),
+        authMW(),
+        checkPermissionMW(),
         getUserMW(objRepo),
         getIssueMW(objRepo));
 
     app.get('/issues/:userid/edit/:issueid',
-        errorRenderMW(objRepo, 'edit_issue'),
-        renderMW(objRepo, 'edit_issue'));
+        errorRenderMW( 'edit_issue'),
+        renderMW( 'edit_issue'));
 
     app.post('/issues/:userid/edit/:issueid',
         upsertIssueMW(objRepo),
-        errorRenderMW(objRepo, 'edit_issue'),
-        redirectMW(objRepo,'/issues/:userid'));
+        errorRenderMW( 'edit_issue'),
+        redirectMW('/issues/:userid'));
 
     app.get('/issues/:userid/del/:issueid',
-        authMW(objRepo),
-        checkPermissionMW(objRepo),
+        authMW(),
+        checkPermissionMW(),
         getUserMW(objRepo),
         getIssueMW(objRepo),
         deleteIssueMW(objRepo),
-        redirectMW(objRepo,'/issues/:userid'));
+        redirectMW('/issues/:userid'));
 
     app.get('/profile/:userid',
-        authMW(objRepo),
+        authMW(),
         getUserMW(objRepo),
         getIssuesMW(objRepo),
-        renderMW(objRepo, 'profile'));
+        renderMW( 'profile'));
 
     app.use('/user/edit/:userid',
-        authMW(objRepo),
-        checkPermissionMW(objRepo),
+        authMW(),
+        checkPermissionMW(),
         getUserMW(objRepo));
 
     app.get('/user/edit/:userid',
-        errorRenderMW(objRepo, 'edit_profile'),
-        renderMW(objRepo, 'edit_profile'));
+        errorRenderMW( 'edit_profile'),
+        renderMW( 'edit_profile'));
 
     app.post('/user/edit/:userid',
         validateProfileDataMW(objRepo),
         upsertUserMW(objRepo),
-        errorRenderMW(objRepo, 'edit_profile'));
+        errorRenderMW( 'edit_profile'));
 
     app.get('/user/del/:userid',
-        authMW(objRepo),
-        checkPermissionMW(objRepo),
+        authMW(),
+        checkPermissionMW(),
         getUserMW(objRepo),
         deleteUserMW(objRepo),
-        logoutMW(objRepo));
+        logoutMW());
 
-    app.get('/logout', logoutMW(objRepo));
+    app.get('/logout', logoutMW());
 };

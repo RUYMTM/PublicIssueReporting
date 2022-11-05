@@ -3,7 +3,7 @@
  *  If user has permission (own properties or admin user ) call next, otherwise redirect to the previous page
  */
 
-module.exports = function (objRepo) {
+module.exports = function () {
     return function (req, res, next) {
         if(typeof  req.params.userid === "undefined"){
             return res.redirect("/issues")
