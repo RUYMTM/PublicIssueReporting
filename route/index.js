@@ -18,9 +18,16 @@ const checkIfLoggedInMW = require('../middleware/auth/checkIfLoggedIn');
 const logoutMW = require('../middleware/auth/logout');
 const errorRenderMW = require('../middleware/errorRender');
 const redirectMW = require('../middleware/redirect');
+const validateProfileDataMW = require('../middleware/user/validateProfileData');
+
+const UserModel = require('../model/user');
+const IssueModel = require('../model/issue');
 
 module.exports = function (app) {
-    const objRepo = {};
+    const objRepo = {
+        UserModel: UserModel,
+        IssueModel: IssueModel
+    };
 
     app.post('/',
         passwordValidationMW(objRepo),
@@ -42,8 +49,7 @@ module.exports = function (app) {
         checkIfLoggedInMW(objRepo),
         checkRegistryDataMW(objRepo),
         upsertUserMW(objRepo),
-        errorRenderMW(objRepo, 'registry'),
-        redirectMW(objRepo, '/'));
+        errorRenderMW(objRepo, 'registry'));
 
     app.use('/forgotten_password',
         checkIfLoggedInMW(objRepo),
@@ -113,9 +119,9 @@ module.exports = function (app) {
         renderMW(objRepo, 'edit_profile'));
 
     app.post('/user/edit/:userid',
+        validateProfileDataMW(objRepo),
         upsertUserMW(objRepo),
-        errorRenderMW(objRepo, 'edit_profile'),
-        redirectMW(objRepo,'/profile/:userid'));
+        errorRenderMW(objRepo, 'edit_profile'));
 
     app.get('/user/del/:userid',
         authMW(objRepo),

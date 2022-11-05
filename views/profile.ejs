@@ -7,22 +7,35 @@
             <div class="row justify-content-around">
                 <div class="col-6">
                     <div class="row">
-                        <div class="col-4">
-                            <h1>Adatlap</h1>
+                        <div class="col-5">
+                            <h1>
+                                <% if (!isItMe) { %><%= user.lastname %> <%= user.firstname %><% } %> <% if (isItMe) { %>Adatlap<% } %>
+                            </h1>
                         </div>
                         <div class="col-3 align-self-center">
-                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden<% } %> href="/user/edit/<%= user._id %>">Szerkesztés</a>
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden
+                                    <% } %>
+                               href="/user/edit/<%= user._id %>">Szerkesztés</a>
                         </div>
                         <div class="col-2 align-self-center">
-                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden<% } %>  href="/user/del/<%= user._id %>">Törlés</a>
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden
+                                    <% } %>
+                               href="/user/del/<%= user._id %>">Törlés</a>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <a type="button" class="btn btn-secondary" <% if (isItMe) { %>hidden
+                                    <% } %>
+                               href="/issues/<%= user._id %>">Hibajelentései</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 text-end">
-                    <a type="button" class="btn btn-light rounded-0 disabled" href="#" aria-disabled="true">Profile</a>
+                    <a type="button" class="btn btn-light rounded-0  <% if (isItMe) { %>disabled<% } %>"
+                       href="/profile/<%= userId %>">Profile</a>
                     <a type="button" class="btn btn-light rounded-0" href="/issues"
                        aria-disabled="true">Hibajelentések</a>
-                    <a type="button" class="btn btn-light rounded-0" href="/issues/0">Saját hibajelentéseim</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/issues/<%= userId %>">Saját
+                        hibajelentéseim</a>
                 </div>
             </div>
         </div>

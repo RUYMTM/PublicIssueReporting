@@ -3,9 +3,21 @@
  * Redirects to / after delete
  */
 
-module.exports = function (objectrepository) {
+module.exports = function (objRepo) {
     return function (req, res, next) {
-        console.log("delete user userid:" + res.locals.user._id);
-        return next();
+        const UserModel = objRepo["UserModel"]
+        const IssueModel = objRepo["IssueModel"]
+        IssueModel.deleteMany({_owner: req.params.userid}, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return next();
+        });
+        UserModel.deleteOne({_id: req.params.userid}, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return next();
+        });
     };
 };

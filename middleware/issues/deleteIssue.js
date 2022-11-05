@@ -3,9 +3,14 @@
  * Redirects to /issues/:userid after delete
  */
 
-module.exports = function (objectrepository) {
+module.exports = function (objRepo) {
     return function (req, res, next) {
-        console.log("delete issue issueid:" + res.locals.issue._id);
-        return next();
+        const IssueModel = objRepo["IssueModel"]
+        IssueModel.deleteOne({_id: req.params.issueid}, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return next();
+        });
     };
 };

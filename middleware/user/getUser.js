@@ -3,18 +3,18 @@
  * The result is saved to res.locals.user
  */
 module.exports = function (objRepo) {
+    const UserModel = objRepo["UserModel"]
     return function (req, res, next) {
         if(typeof  req.params.userid === "undefined"){
             return next();
         }
-        res.locals.user = {
-            _id: 0,
-            email: 'email',
-            lastname: 'Test',
-            firstname: 'Test',
-            password: 'password'
-        };
-        res.locals.isItMe = (res.locals.user._id === req.session.userId)
-        next();
+        UserModel.findOne({ _id: req.params.userid }, (err, user) => {
+            if (err || !user) {
+                return next(err);
+            }
+            res.locals.user = user;
+            res.locals.isItMe = (res.locals.user._id.toString() === req.session.userId)
+            return next();
+        });
     };
 };

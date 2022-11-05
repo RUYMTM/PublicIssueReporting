@@ -4,35 +4,17 @@
  */
 module.exports = function (objRepo) {
     return function (req, res, next) {
-
-        res.locals.issues = [
-            {
-                _id: 0,
-                description: "Kiégett utcai fény",
-                location: "BP Mester utca 73 előtt",
-                status: false,
-                _owner: {
-                    _id: 0,
-                    email: 'email',
-                    lastname: 'Test',
-                    firstname: 'Test',
-                    password: 'password'
-                }
-            },
-            {
-                _id: 1,
-                description: "Törött pad",
-                location: "BP Ferenciek tere villamos megálló",
-                status: true,
-                _owner: {
-                    _id: 0,
-                    email: 'email',
-                    lastname: 'Test',
-                    firstname: 'Test',
-                    password: 'password'
-                }
+        const IssueModel = objRepo["IssueModel"]
+        IssueModel.find({_owner: res.locals.user._id}, (err, issues) => {
+            if (err) {
+                return next(err);
             }
-        ]
-        next();
+            if(!issues){
+                res.locals.issues = []
+                return next()
+            }
+            res.locals.issues = issues
+            return next();
+        });
     };
 };

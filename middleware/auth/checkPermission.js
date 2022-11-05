@@ -8,7 +8,7 @@ module.exports = function (objRepo) {
         if(typeof  req.params.userid === "undefined"){
             return res.redirect("/issues")
         }
-        if(req.params.userid === req.session.userId){
+        if(req.params.userid !== req.session.userId){
             return res.redirect("/profile/"+req.params.userid)
         }
         return next();

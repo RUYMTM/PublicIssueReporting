@@ -3,36 +3,19 @@
  * The result is saved to res.locals.allIssues
  */
 
-module.exports = function (objectrepository) {
+module.exports = function (objRepo) {
     return function (req, res, next) {
-        res.locals.allIssues = [
-            {
-                _id: 0,
-                description: "Kiégett utcai fény",
-                location: "BP Mester utca 73 előtt",
-                status: false,
-                _owner: {
-                    _id: 0,
-                    email: 'email',
-                    lastname: 'Test',
-                    firstname: 'Test',
-                    password: 'password'
-                }
-            },
-            {
-                _id: 1,
-                description: "Törött pad",
-                location: "BP Ferenciek tere villamos megálló",
-                status: true,
-                _owner: {
-                    _id: 0,
-                    email: 'email',
-                    lastname: 'Test',
-                    firstname: 'Test',
-                    password: 'password'
-                }
+        const IssueModel = objRepo["IssueModel"]
+        IssueModel.find({}, (err, issues) => {
+            if (err) {
+                return next(err);
             }
-        ]
-        next();
+            if(!issues){
+                res.locals.allIssues = []
+                return next()
+            }
+            res.locals.allIssues = issues
+            return next();
+        }).populate('_owner');
     };
 };
