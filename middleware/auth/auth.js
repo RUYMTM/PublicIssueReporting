@@ -7,6 +7,7 @@ module.exports = function () {
         if (typeof req.session.userId === 'undefined' ){
             return res.redirect("/")
         }
+        res.locals.isAdmin = req.session.isAdmin;
         return next()
     };
 };

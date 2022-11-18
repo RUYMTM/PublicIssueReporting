@@ -11,13 +11,17 @@ module.exports = function (objRepo) {
             if (err) {
                 return next(err);
             }
-            return next();
         });
         UserModel.deleteOne({_id: req.params.userid}, (err) => {
             if (err) {
                 return next(err);
             }
-            return next();
+            if(req.params.userid === req.session.userId){
+                return next();
+            } else {
+                return res.redirect("/");
+            }
+
         });
     };
 };

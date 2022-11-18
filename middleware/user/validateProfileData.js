@@ -16,7 +16,7 @@ module.exports = function (objRepo) {
             return next();
         }
 
-        UserModel.findOne({email: req.body.email, _id: { $ne: req.session.userId } }, (err, user) => {
+        UserModel.findOne({email: req.body.email, _id: { $ne: req.params.userid } }, (err, user) => {
             if (err || user) {
                 res.locals.error = 'Ezzel az e-mail címmel már létezik felhasználó!';
                 return next();

@@ -17,8 +17,9 @@ const manageSuccessMW = require('../middleware/auth/manageSuccess');
 const checkIfLoggedInMW = require('../middleware/auth/checkIfLoggedIn');
 const logoutMW = require('../middleware/auth/logout');
 const errorRenderMW = require('../middleware/errorRender');
-const redirectMW = require('../middleware/redirect');
+const redirectBackMW = require('../middleware/redirectBack');
 const validateProfileDataMW = require('../middleware/user/validateProfileData');
+const getAllUserMW = require('../middleware/user/getAllUser')
 
 const UserModel = require('../model/user');
 const IssueModel = require('../model/issue');
@@ -78,7 +79,7 @@ module.exports = function (app) {
     app.post('/issues/:userid/new',
         getUserMW(objRepo),
         upsertIssueMW(objRepo),
-        redirectMW('/issues/:userid'));
+        redirectBackMW());
 
     app.use('/issues/:userid/edit/:issueid',
         authMW(),
@@ -93,7 +94,7 @@ module.exports = function (app) {
     app.post('/issues/:userid/edit/:issueid',
         upsertIssueMW(objRepo),
         errorRenderMW( 'edit_issue'),
-        redirectMW('/issues/:userid'));
+        redirectBackMW());
 
     app.get('/issues/:userid/del/:issueid',
         authMW(),
@@ -101,7 +102,7 @@ module.exports = function (app) {
         getUserMW(objRepo),
         getIssueMW(objRepo),
         deleteIssueMW(objRepo),
-        redirectMW('/issues/:userid'));
+        redirectBackMW());
 
     app.get('/profile/:userid',
         authMW(),
@@ -129,6 +130,11 @@ module.exports = function (app) {
         getUserMW(objRepo),
         deleteUserMW(objRepo),
         logoutMW());
+
+    app.get('/users',
+        authMW(),
+        getAllUserMW(objRepo),
+        renderMW( 'users'));
 
     app.get('/logout', logoutMW());
 };

@@ -5,6 +5,9 @@
 
 module.exports = function () {
     return function (req, res, next) {
+        if(req.session.isAdmin){
+            return next();
+        }
         if(typeof  req.params.userid === "undefined"){
             return res.redirect("/issues")
         }

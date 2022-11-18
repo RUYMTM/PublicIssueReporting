@@ -5,6 +5,7 @@ const User = database.model('User', {
     lastname: String,
     firstname: String,
     password: String,
+    role: String
 });
 
 module.exports = User;

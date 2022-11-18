@@ -42,6 +42,5 @@ module.exports = function (objRepo) {
                 return next();
             });
         }
-        return next();
     };
 };

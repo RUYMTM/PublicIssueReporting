@@ -17,6 +17,7 @@ module.exports = function (objRepo) {
                 res.locals.user.firstname = res.locals.firstname
                 res.locals.user.password = passwordHash.generate(res.locals.password)
 
+                res.locals.user.role = "basic"
                 res.locals.user.save(err => {
                     if (err) {
                         return next(err);
@@ -34,7 +35,7 @@ module.exports = function (objRepo) {
                     if (err) {
                         return next(err);
                     }
-                    return res.redirect("/profile/"+req.session.userId);
+                    return res.back();
                 });
             }
         } else {

@@ -20,7 +20,7 @@ module.exports = function (objRepo) {
             }
             if (passwordHash.verify(req.body.password, user.password)) {
                 req.session.userId = user._id;
-                req.session.isAdmin= user.email === "admin";
+                req.session.isAdmin= user.role === "admin";
                 return req.session.save(err => res.redirect('/issues'));
             }
 

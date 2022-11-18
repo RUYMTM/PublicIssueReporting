@@ -9,16 +9,19 @@
                     <div class="row">
                         <div class="col-5">
                             <h1>
-                                <% if (!isItMe) { %><%= user.lastname %> <%= user.firstname %><% } %> <% if (isItMe) { %>Adatlap<% } %>
+                                <% if (!isItMe) { %><%= user.lastname %> <%= user.firstname %>
+                                <% } %>
+                                <% if (isItMe) { %>Adatlap
+                                <% } %>
                             </h1>
                         </div>
                         <div class="col-3 align-self-center">
-                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe && !isAdmin) { %>hidden
                                     <% } %>
                                href="/user/edit/<%= user._id %>">Szerkesztés</a>
                         </div>
                         <div class="col-2 align-self-center">
-                            <a type="button" class="btn btn-secondary" <% if (!isItMe) { %>hidden
+                            <a type="button" class="btn btn-secondary" <% if (!isItMe && !isAdmin) { %>hidden
                                     <% } %>
                                href="/user/del/<%= user._id %>">Törlés</a>
                         </div>
@@ -36,6 +39,7 @@
                        aria-disabled="true">Hibajelentések</a>
                     <a type="button" class="btn btn-light rounded-0" href="/issues/<%= userId %>">Saját
                         hibajelentéseim</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/users">Felhasználók</a>
                 </div>
             </div>
         </div>
@@ -50,8 +54,21 @@
                     <div class="row py-5"><h4>Hibajelentések száma: <%= issues.length %></h4></div>
                 </div>
                 <div class="col-6">
-                    <img src="https://www.tableau.com/sites/default/files/2021-06/DataGlossary_Icons_Pie%20Chart.jpg"
-                         class="img-fluid">
+                    <% if (issues.length !== 0) { %>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-4 pt-5">
+                                    <span>&#129001; Foglalkozott hibajelentései: <%= issues.filter(issue => issue.status).length%></span>
+                                </div>
+                                <div class="row">
+                                    <span>&#128997; Függőben lévő hibajelentései: <%= issues.filter(issue => !issue.status).length%></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="piechart"></div>
+                            </div>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -59,3 +76,26 @@
 
 </div>
 <%- include('footer') -%>
+<% if (issues.length !== 0) { %>
+    <style>
+        .piechart {
+            margin-top: 30px;
+            display: block;
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                    mediumseagreen 0 <%= 360*(issues.filter(issue => issue.status).length / issues.length) %>deg,
+                    red 0 <%= 360*(issues.filter(issue => !issue.status).length / issues.length) %>deg
+            );
+        }
+
+        body,
+        .piechart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+<% } %>

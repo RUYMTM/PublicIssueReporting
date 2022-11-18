@@ -1,0 +1,90 @@
+<%- include('header') -%>
+<body>
+<div class="container">
+    <%- include('logout') -%>
+    <div class="row pb-5">
+        <div class="col-11 border-bottom border-4 border-dark">
+            <div class="row justify-content-around">
+                <div class="col-6">
+                    <h1>Felhasználók</h1>
+                </div>
+                <div class="col-6 text-end">
+                    <a type="button" class="btn btn-light rounded-0" href="/profile/<%= userId %>">Profile</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/issues"
+                       aria-disabled="true">Hibajelentések</a>
+                    <a type="button" class="btn btn-light rounded-0" href="/issues/<%= userId %>">Saját
+                        hibajelentéseim</a>
+                    <a type="button" class="btn btn-light rounded-0 disabled" href="#" aria-disabled="true">Felhasználók</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="row pb-2 justify-content-around">
+                <div class="col-5">
+                    <div class="form-group row justify-content-md-end">
+                        <label for="pageSelector" class="col-2 col-form-label">Oldal:</label>
+                        <div class="col-3">
+                            <select class="form-control" id="pageSelector" onchange="selectPage()">
+                                <%
+                                let i = 0
+                                        do {
+                                %>
+                                    <option
+                                    <% if ((i + 1) === page) { %> selected
+                                            <% } %>
+                                    ><%= i + 1 %></option>
+
+                                <%
+                                    i++
+                                }while (i < Math.ceil(users.length / 15))
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="row pb-5 justify-content-md-center">
+                <table class="table">
+                    <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">Név</th>
+                        <th scope="col">E-mail cím</th>
+                        <th scope="col">Felhasználó típus</th>
+                        <th scope="col">Hibajelentések száma</th>
+                        <th scope="col">Foglalkozott hibajelentések száma</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% usersOnPage.forEach(function(user){ %>
+                        <tr>
+                            <td>
+                                <a href="/profile/<%= user._id %> "><%= user.lastname %> <%= user.firstname %></a>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td>
+                                <%= user.role %>
+                            </td>
+                            <td>
+                                <%= user.issues.length %>
+                            </td>
+                            <td>
+                                <%= user.issues.filter(issue=>issue.status).length %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('footer') -%>
+<%- include('on_select') -%>
