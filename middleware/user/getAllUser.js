@@ -44,7 +44,6 @@ module.exports = function (objRepo) {
                     )
 
                 });
-                console.log(usersWithIssues)
                 res.locals.users = usersWithIssues
                 res.locals.usersOnPage = usersWithIssues.slice((page - 1) * 15, page * 15)
 

@@ -20,9 +20,9 @@
         </div>
     </div>
     <div class="row justify-content-md-center">
-        <div class="col-8">
-            <div class="row pb-2 justify-content-around">
-                <div class="col-5">
+        <div class="col-10">
+            <div class="row pb-2 justify-content-end">
+                <div class="col-4">
                     <div class="form-group row justify-content-md-end">
                         <label for="pageSelector" class="col-2 col-form-label">Oldal:</label>
                         <div class="col-3">
@@ -48,16 +48,16 @@
         </div>
     </div>
     <div class="row justify-content-md-center">
-        <div class="col-8">
+        <div class="col-10">
             <div class="row pb-5 justify-content-md-center">
                 <table class="table">
                     <thead class="table-secondary">
                     <tr>
                         <th scope="col">Név</th>
                         <th scope="col">E-mail cím</th>
-                        <th scope="col">Felhasználó típus</th>
                         <th scope="col">Hibajelentések száma</th>
                         <th scope="col">Foglalkozott hibajelentések száma</th>
+                        <th scope="col">Felhasználó típus</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,13 +70,13 @@
                                 <%= user.email %>
                             </td>
                             <td>
-                                <%= user.role %>
-                            </td>
-                            <td>
                                 <%= user.issues.length %>
                             </td>
                             <td>
                                 <%= user.issues.filter(issue=>issue.status).length %>
+                            </td>
+                            <td>
+                                <%= user.role %>
                             </td>
                         </tr>
                     <% }); %>

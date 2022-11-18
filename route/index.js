@@ -19,15 +19,22 @@ const logoutMW = require('../middleware/auth/logout');
 const errorRenderMW = require('../middleware/errorRender');
 const redirectBackMW = require('../middleware/redirectBack');
 const validateProfileDataMW = require('../middleware/user/validateProfileData');
-const getAllUserMW = require('../middleware/user/getAllUser')
+const getAllUserMW = require('../middleware/user/getAllUser');
+const getTokenMW = require('../middleware/token/getToken');
+const checkValidityMW = require('../middleware/token/checkValidity');
+const checkValidDataMW = require('../middleware/token/checkValidData');
+const changePasswordUserMW = require('../middleware/user/changeUserPassword');
+const deleteTokenMW = require('../middleware/token/deleteToken')
 
 const UserModel = require('../model/user');
 const IssueModel = require('../model/issue');
+const TokenModel = require('../model/token');
 
 module.exports = function (app) {
     const objRepo = {
         UserModel: UserModel,
-        IssueModel: IssueModel
+        IssueModel: IssueModel,
+        TokenModel: TokenModel
     };
 
     app.post('/',
@@ -55,7 +62,7 @@ module.exports = function (app) {
     app.use('/forgotten_password',
         checkIfLoggedInMW(),
         checkUserExistMW(objRepo),
-        sendPasswordRequestMW(),
+        sendPasswordRequestMW(objRepo),
         renderMW( 'forgotten_password'));
 
     app.get('/issues',
@@ -135,6 +142,22 @@ module.exports = function (app) {
         authMW(),
         getAllUserMW(objRepo),
         renderMW( 'users'));
+
+    app.use('/password_reset/:userid/:token',
+        checkIfLoggedInMW(),
+        getUserMW(objRepo),
+        getTokenMW(objRepo),
+        checkValidityMW());
+
+    app.get('/password_reset/:userid/:token',
+        errorRenderMW( 'password_reset'),
+        renderMW( 'password_reset'));
+
+    app.post('/password_reset/:userid/:token',
+        checkValidDataMW(),
+        changePasswordUserMW(),
+        deleteTokenMW(objRepo),
+        errorRenderMW( 'password_reset'));
 
     app.get('/logout', logoutMW());
 };

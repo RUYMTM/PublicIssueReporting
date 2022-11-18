@@ -2,8 +2,6 @@
  * Load user from database by the e-mail address (from POST), if it's exist call next
  * The user is saved to res.locals.user
  */
-
-const passwordHash = require("../../config/passwordHash");
 module.exports = function (objRepo) {
     return function (req, res, next) {
         const UserModel = objRepo["UserModel"]
@@ -16,7 +14,7 @@ module.exports = function (objRepo) {
                 res.locals.error = "Nem létezik felhasználó a megadott e-mail címmel!"
                 return next(err);
             }
-            res.locals.email = req.body.email;
+            res.locals.user = user;
             return next();
         });
     };
