@@ -28,6 +28,7 @@ module.exports = function (objRepo) {
         UserModel.findOne({email: req.body.email}, (err, user) => {
             if (err || user) {
                 res.locals.error = 'Ezzel az e-mail címmel már létezik felhasználó!';
+                return next(err);
             } else {
 
                 res.locals.email = req.body.email
